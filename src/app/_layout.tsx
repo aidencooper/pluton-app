@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/hooks/useAuthStore";
 import {
   JosefinSans_400Regular,
   JosefinSans_500Medium,
@@ -14,6 +15,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const isLoggedIn = useAuthStore((state) => state.loggedIn);
+
   const [fontsLoaded, fontsError] = useFonts({
     JosefinSans_400Regular,
     JosefinSans_500Medium,
@@ -35,7 +38,13 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Protected guard={!isLoggedIn}>
+          <Stack.Screen name="login" options={{ headerShown: false }} />
+        </Stack.Protected>
+
+        <Stack.Protected guard={isLoggedIn}>
+          <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+        </Stack.Protected>
       </Stack>
     </SafeAreaProvider>
   );

@@ -60,7 +60,8 @@
             "topShelfWide2x": "./src/assets/images/myimage-tvos-4640x1440.png"
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

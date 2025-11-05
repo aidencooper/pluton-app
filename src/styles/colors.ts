@@ -24,16 +24,16 @@ export type ColorPalette = {
 
 export const DarkPalette: ColorPalette = {
   // Background
-  bgDark: "hsl(228 100% 4%)",
-  bg: "hsl(214 100% 6%)",
-  bgLight: "hsl(205 100% 7%)",
+  bgDark: "hsl(235 3% 0%)",
+  bg: "hsl(235 3% 5%)",
+  bgLight: "hsl(235 3% 10%)",
   // Text
-  text: "hsl(204 100% 94%)",
-  textMuted: "hsl(203 74% 68%)",
+  text: "hsl(235 3% 95%)",
+  textMuted: "hsl(235 3% 70%)",
   // Border
-  highlight: "hsl(198 100% 23%)",
-  border: "hsl(201 100% 18%)",
-  borderMuted: "hsl(206 100% 14%)",
+  highlight: "hsl(235 3% 60%)",
+  border: "hsl(235 3% 30%)",
+  borderMuted: "hsl(235 3% 30%)",
   // Action
   primary: "hsl(200 100% 60%)",
   secondary: "hsl(28 96% 60%)",
@@ -46,16 +46,16 @@ export const DarkPalette: ColorPalette = {
 
 export const LightPalette: ColorPalette = {
   // Background
-  bgDark: "hsl(204 100% 89%)",
-  bg: "hsl(204 100% 94%)",
-  bgLight: "hsl(204 100% 100%)",
+  bgDark: "hsl(235 3% 90%)",
+  bg: "hsl(235 3% 95%)",
+  bgLight: "hsl(235 3% 100%)",
   // Text
-  text: "hsl(233 100% 11%)",
-  textMuted: "hsl(201 100% 18%)",
+  text: "hsl(235 3% 5%)",
+  textMuted: "hsl(235 3% 30%)",
   // Border
-  highlight: "hsl(203 100% 96%)",
-  border: "hsl(197 100% 31%)",
-  borderMuted: "hsl(197 100% 43%)",
+  highlight: "hsl(235 3% 100%)",
+  border: "hsl(235 3% 95%)",
+  borderMuted: "hsl(235 3% 43%)",
   // Action
   primary: "hsl(201 100% 18%)",
   secondary: "hsl(27 100% 17%)",

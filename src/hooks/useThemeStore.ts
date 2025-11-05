@@ -4,16 +4,16 @@ import { create } from "zustand";
 type ThemeStore = {
   theme: Theme;
   actions: {
-    updateTheme: (theme: Theme) => void;
+    setTheme: (theme: Theme) => void;
   };
 };
 
 const useThemeStore = create<ThemeStore>((set) => ({
   theme: DEFAULT_THEME,
   actions: {
-    updateTheme: (theme) => set(() => ({ theme: theme })),
+    setTheme: (theme) => set(() => ({ theme: theme })),
   },
 }));
 
 export const useTheme = () => useThemeStore((state) => state.theme);
-export const useThemeAction = () => useThemeStore((state) => state.actions);
+export const useThemeActions = () => useThemeStore((state) => state.actions);
