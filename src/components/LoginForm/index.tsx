@@ -1,12 +1,32 @@
 import { useTheme } from "@/hooks/useThemeStore";
 import { Theme } from "@/styles/themes";
 import { rem } from "@/utils/scaling";
+import {
+  exchangeCodeAsync,
+  makeRedirectUri,
+  useAuthRequest,
+} from "expo-auth-session";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
+import * as WebBrowser from "expo-web-browser";
+import { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+
+WebBrowser.maybeCompleteAuthSession();
 
 const EMAIL_CHARACTER_LIMIT = 254;
 const PASSWORD_CHARACTER_LIMIT = 16;
+
+const githubDiscovery = {
+  authorizationEndpoint: "http://localhost:8080/oauth2/authorize",
+  tokenEndpoint: "http://localhost:8080/oauth2/token",
+  revocationEndpoint: "http://localhost:8080/oauth2/revoke",
+};
+
+const googleDiscovery = {
+  authorizationEndpoint: "http://localhost:8080/oauth2/authorization/google",
+  tokenEndpoint: "http://localhost:8080/oauth2/token",
+  revocationEndpoint: "http://localhost:8080/oauth2/revoke",
+};
 
 export default function LoginForm() {
   const theme = useTheme();
@@ -14,6 +34,41 @@ export default function LoginForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId: "pluton-client",
+      scopes: ["openid", "profile"],
+      redirectUri: makeRedirectUri({
+        scheme: "pluton",
+      }),
+    },
+    githubDiscovery
+  );
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      const code = response.params.code;
+      const codeVerifier = request?.codeVerifier ?? "";
+
+      exchangeCodeAsync(
+        {
+          clientId: "pluton-client",
+          code: code,
+          redirectUri: makeRedirectUri({
+            scheme: "pluton",
+          }),
+          extraParams: {
+            code_verifier: codeVerifier,
+          },
+        },
+        githubDiscovery
+      )
+        .then((response) => console.log(response))
+        // TODO: Add better error responses
+        .catch((error) => console.error("Token exchange failed: ", error));
+    }
+  }, [response, request?.codeVerifier]);
 
   return (
     <LinearGradient
@@ -55,7 +110,7 @@ export default function LoginForm() {
 
       <Button
         title="Sign In"
-        onPress={() => signIn(email, password)}
+        onPress={() => login(email, password)}
         color={theme.palette.secondary}
       />
 
@@ -72,8 +127,11 @@ export default function LoginForm() {
           color={theme.palette.secondary}
         />
         <Button
+          disabled={!request}
           title="Github"
-          onPress={() => {}}
+          onPress={() => {
+            promptAsync().catch((exception) => console.log(exception));
+          }}
           color={theme.palette.secondary}
         />
         <Button
@@ -86,7 +144,7 @@ export default function LoginForm() {
   );
 }
 
-function signIn(email: string, password: string) {}
+function login(email: string, password: string) {}
 
 const makeStyles = (theme: Theme) =>
   StyleSheet.create({
